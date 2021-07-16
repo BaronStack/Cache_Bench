@@ -14,6 +14,9 @@
   Compile a cache-lib, and user could use the `lru` or `clock` cache easily. Just like the example of the example directroy.
 
 # Performance
+## Environment
+`Mac pro : Darwin Kernel Version 20.3.0`
+## Benchmark
 `./cache_bench`
 ```shell
  $ ./cache_bench -threads=32 -lookup_percent=100 -erase_percent=0 -insert_percent=0 -num_shard_bits=8
