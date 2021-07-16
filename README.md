@@ -16,16 +16,32 @@
 # Performance
 `./cache_bench`
 ```shell
+ $ ./cache_bench -threads=32 -lookup_percent=100 -erase_percent=0 -insert_percent=0 -num_shard_bits=8
+Number of threads   : 32
 Ops per thread      : 1200000
 Cache size          : 8388608
-Num shard bits      : 4
+Num shard bits      : 8
 Max key             : 1073741824
 Populate cache      : 0
-Insert percentage   : 40%
-Lookup percentage   : 50%
-Erase percentage    : 10%
+Insert percentage   : 0%
+Lookup percentage   : 100%
+Erase percentage    : 0%
 Test count          : 1
 ----------------------------
-1 Test: complete in 4.448 s; QPS = 4316274
+1 Test: complete in 0.767 s; QPS = 50052072
+
+ $ ./cache_bench -threads=32 -lookup_percent=100 -erase_percent=0 -insert_percent=0 -num_shard_bits=8 -use_clock_cache=true
+Number of threads   : 32
+Ops per thread      : 1200000
+Cache size          : 8388608
+Num shard bits      : 8
+Max key             : 1073741824
+Populate cache      : 0
+Insert percentage   : 0%
+Lookup percentage   : 100%
+Erase percentage    : 0%
+Test count          : 1
+----------------------------
+1 Test: complete in 1.216 s; QPS = 31567213
 ```
 
