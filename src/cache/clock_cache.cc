@@ -247,7 +247,7 @@ class ClockCacheShard final : public CacheShard {
   void EraseUnRefEntries() override;
   void ApplyToAllCacheEntries(void (*callback)(void*, size_t),
                               bool thread_safe) override;
-	void PrintCacheInfo() const override ;
+	void PrintCacheInfo() override ;
 
  private:
   static const uint32_t kInCacheBit = 1;
@@ -402,7 +402,7 @@ void PrintHead2() {
 					head1, head2, head3);
 }
 
-void ClockCacheShard::PrintCacheInfo() const {
+void ClockCacheShard::PrintCacheInfo() {
 	// print hashtable status
 	if (table_.empty() && list_.empty() && recycle_.empty()) {
 		return;

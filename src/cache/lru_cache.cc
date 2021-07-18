@@ -47,6 +47,38 @@ LRUHandle* LRUHandleTable::Insert(LRUHandle* h) {
   return old;
 }
 
+void PrintLRUHead() {
+	const char* head1 = "key";
+	const char* head2 = "value";
+	const char* head3 = "incache";
+	const char* head4 = "usage";
+	const char* head5 = "refs";
+	const char* head6 = "inhigh";
+	const char* head7 = "hash";
+	fprintf(stdout, "%-20s %-20s %-20s %-20s %-20s %-20s %-20s\n",
+					head1, head2, head3, head4, head5, head6, head7);
+}
+
+void LRUHandleTable::PrintTableInfo() const {
+	fprintf(stdout, "\n\nHashTable\n");
+	PrintLRUHead();
+	for (int i = 0; i < length_; i++) {
+		LRUHandle* tmp_head = list_[i];
+		fprintf(stdout, "bucket: %d \n", i);
+		while (tmp_head) {
+			fprintf(stdout, "%-20s %-20s %-20d %-20lu %-20d %-20u %-20u\n",
+							tmp_head->key_data,
+							strcmp(static_cast<char*> (tmp_head->value), "") ? "-":"val" ,
+							tmp_head->InCache(),
+							tmp_head->charge,
+							tmp_head->refs,
+							tmp_head->InHighPriPool(),
+							tmp_head->hash);
+			tmp_head = tmp_head->next_hash;
+		}
+	}
+}
+
 LRUHandle* LRUHandleTable::Remove(const Slice& key, uint32_t hash) {
   LRUHandle** ptr = FindPointer(key, hash);
   LRUHandle* result = *ptr;
@@ -439,6 +471,45 @@ std::string LRUCacheShard::GetPrintableOptions() const {
              high_pri_pool_ratio_);
   }
   return std::string(buffer);
+}
+
+void LRUCacheShard::PrintCacheInfo() {
+	table_.PrintTableInfo();
+
+	LRUHandle* lru;
+	LRUHandle* lru_low_list;
+	TEST_GetLRUList(&lru, &lru_low_list);
+
+// 	fprintf(stdout, "\n\nLRU-low_list\n");
+// 	PrintLRUHead();
+// 	LRUHandle* tmp_low = lru_low_list;
+// 	while (tmp_low != lru) {
+// 		fprintf(stdout, "%-20s %-20s %-20d %-20lu %-20d %-20u %-20u\n",
+// 						tmp_low->key_data,
+// 						strcmp(static_cast<char*> (tmp_low->value), "") ? "-":"val" ,
+// 						tmp_low->InCache(),
+// 						tmp_low->charge,
+// 						tmp_low->refs,
+// 						tmp_low->InHighPriPool(),
+// 						tmp_low->hash);
+// 		tmp_low = tmp_low->next;
+// 	}
+
+	fprintf(stdout, "\n\nLRU-circle-list\n");
+	PrintLRUHead();
+	LRUHandle* tmp_high = lru->next;
+	while (tmp_high != lru) {
+		fprintf(stdout, "%-20s %-20s %-20d %-20lu %-20d %-20u %-20u\n",
+						tmp_high->key_data,
+						strcmp(static_cast<char*> (tmp_high->value), "") ? "-":"val" ,
+						tmp_high->InCache(),
+						tmp_high->charge,
+						tmp_high->refs,
+						tmp_high->InHighPriPool(),
+						tmp_high->hash);
+
+			tmp_high = tmp_high->next;
+	}
 }
 
 LRUCache::LRUCache(size_t capacity, int num_shard_bits,

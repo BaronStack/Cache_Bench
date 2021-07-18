@@ -38,7 +38,7 @@ class CacheShard {
                                       bool thread_safe) = 0;
   virtual void EraseUnRefEntries() = 0;
   virtual std::string GetPrintableOptions() const { return ""; }
-	virtual void PrintCacheInfo() const  { printf("Not supported\n"); }
+	virtual void PrintCacheInfo() { printf("Not supported\n"); }
 };
 
 // Generic cache interface which shards cache by hash of keys. 2^num_shard_bits
@@ -78,7 +78,7 @@ class ShardedCache : public Cache {
                                       bool thread_safe) override;
   virtual void EraseUnRefEntries() override;
   virtual std::string GetPrintableOptions() const override;
-  virtual void PrintCacheInfo() const override;
+  virtual void PrintCacheInfo() override;
 
   int GetNumShardBits() const { return num_shard_bits_; }
 

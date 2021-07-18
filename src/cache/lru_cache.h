@@ -141,6 +141,7 @@ class LRUHandleTable {
   LRUHandle* Lookup(const Slice& key, uint32_t hash);
   LRUHandle* Insert(LRUHandle* h);
   LRUHandle* Remove(const Slice& key, uint32_t hash);
+  void PrintTableInfo() const;
 
   template <typename T>
   void ApplyToAllCacheEntries(T func) {
@@ -213,6 +214,7 @@ class ALIGN_AS(CACHE_LINE_SIZE) LRUCacheShard final : public CacheShard {
   virtual void EraseUnRefEntries() override;
 
   virtual std::string GetPrintableOptions() const override;
+	void PrintCacheInfo() override ;
 
   void TEST_GetLRUList(LRUHandle** lru, LRUHandle** lru_low_pri);
 

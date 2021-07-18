@@ -227,7 +227,7 @@ public:
 
 	virtual std::string GetPrintableOptions() const { return ""; }
 
-	virtual void PrintCacheInfo() const { printf("Not supported \n"); }
+	virtual void PrintCacheInfo() { printf("Not supported \n"); }
 
 	MemoryAllocator* memory_allocator() const { return memory_allocator_.get(); }
 

@@ -144,7 +144,7 @@ std::string ShardedCache::GetPrintableOptions() const {
   return ret;
 }
 
-void ShardedCache::PrintCacheInfo() const {
+void ShardedCache::PrintCacheInfo() {
 	int num_shards = 1 << num_shard_bits_;
 	for (int i = 0; i < num_shards; i++) {
 		fprintf(stdout , " --------------- *%d* shared cacheinfo ----------------\n", i);
